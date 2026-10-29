@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="ky" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nursultan Najimidinov — Frontend Developer & Mentor</title>
+  <meta name="description" content="Nursultan Najimidinov — Frontend Developer & Mentor. HTML, CSS, JavaScript, React, Next.js боюнча адис." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:       #fafafa;
+      --bg2:      #f4f4f5;
+      --surface:  #ffffff;
+      --border:   #e4e4e7;
+      --border2:  #d1d5db;
+      --muted:    #a1a1aa;
+      --sub:      #71717a;
+      --text:     #27272a;
+      --bright:   #09090b;
+
+      --indigo:   #4f46e5;
+      --indigo-l: #6366f1;
+      --indigo-bg:#eef2ff;
+      --indigo-b: #c7d2fe;
+
+      --green:    #059669;
+      --green-bg: #ecfdf5;
+      --green-b:  #a7f3d0;
+
+      --violet:   #7c3aed;
+      --violet-bg:#f5f3ff;
+
+      --amber:    #d97706;
+      --amber-bg: #fffbeb;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: #c7d2fe; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg2); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+    /* ── NAVBAR ── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(250,250,250,0.8);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow 0.3s;
+    }
+    #nav.scrolled { box-shadow: 0 1px 20px rgba(0,0,0,0.06); }
+
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 32px; height: 62px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-weight: 700; font-size: 1rem; color: var(--bright);
+      text-decoration: none; letter-spacing: -0.02em;
+    }
+    .logo span { color: var(--indigo); }
+
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-lnk {
+      padding: 6px 12px; border-radius: 8px;
+      font-size: 0.82rem; font-weight: 500; color: var(--sub);
+      text-decoration: none; transition: all 0.2s;
+    }
+    .nav-lnk:hover { color: var(--bright); background: var(--bg2); }
+    .nav-lnk.active { color: var(--indigo); background: var(--indigo-bg); }
+
+    .nav-cta {
+      padding: 7px 16px; border-radius: 9px;
+      font-size: 0.82rem; font-weight: 600;
+      background: var(--indigo); color: #fff;
+      text-decoration: none; transition: all 0.2s;
+      border: 1px solid var(--indigo);
+    }
+    .nav-cta:hover { background: #4338ca; border-color: #4338ca; }
+
+    /* hamburger */
+    #burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    #burger span { display: block; width: 20px; height: 1.5px; background: var(--sub); border-radius: 2px; transition: all 0.3s; }
+    #mob-menu {
+      display: none; flex-direction: column;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 12px 16px 16px; gap: 2px;
+    }
+    #mob-menu.open { display: flex; }
+    #mob-menu a {
+      padding: 10px 12px; border-radius: 8px;
+      font-size: 0.88rem; color: var(--sub); text-decoration: none; transition: all 0.2s;
+    }
+    #mob-menu a:hover { color: var(--bright); background: var(--bg2); }
+
+    /* ── LAYOUT ── */
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+    section { padding: 96px 0; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0 32px; max-width: calc(1100px - 64px); margin-left: auto; margin-right: auto; }
+
+    /* ── TYPOGRAPHY ── */
+    .label {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--indigo); margin-bottom: 14px;
+    }
+    .label::before {
+      content: ''; width: 18px; height: 2px;
+      background: var(--indigo); border-radius: 2px; flex-shrink: 0;
+    }
+
+    h1 { font-size: clamp(2.6rem, 5.5vw, 4rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1.08; color: var(--bright); }
+    h2 { font-size: clamp(1.75rem, 3.5vw, 2.4rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; color: var(--bright); }
+    h3 { font-size: 1rem; font-weight: 600; color: var(--bright); }
+
+    .lead { font-size: 1.05rem; color: var(--sub); line-height: 1.8; }
+    .body { font-size: 0.9rem; color: var(--sub); line-height: 1.8; }
+    .body strong, .lead strong { color: var(--text); font-weight: 500; }
+
+    /* ── BADGE ── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 11px; border-radius: 6px;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.03em;
+    }
+    .badge-indigo { background: var(--indigo-bg); color: var(--indigo); border: 1px solid var(--indigo-b); }
+    .badge-green  { background: var(--green-bg);  color: var(--green);  border: 1px solid var(--green-b); }
+    .badge-violet { background: var(--violet-bg); color: var(--violet); border: 1px solid #ddd6fe; }
+    .badge-amber  { background: var(--amber-bg);  color: var(--amber);  border: 1px solid #fde68a; }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px;
+      transition: box-shadow 0.25s, border-color 0.25s;
+    }
+    .card:hover { box-shadow: 0 4px 24px rgba(0,0,0,0.07); border-color: var(--border2); }
+
+    /* ── STAT ── */
+    .stat-num { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.05em; color: var(--bright); line-height: 1; }
+    .stat-label { font-size: 0.72rem; color: var(--muted); margin-top: 4px; letter-spacing: 0.04em; text-transform: uppercase; }
+
+    /* ── TAG ── */
+    .tag {
+      display: inline-block; padding: 5px 12px; border-radius: 7px;
+      font-size: 0.75rem; font-weight: 500; color: var(--sub);
+      background: var(--bg2); border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .tag:hover { background: var(--indigo-bg); color: var(--indigo); border-color: var(--indigo-b); }
+
+    /* ── SKILL BAR ── */
+    .bar-track {
+      height: 6px; background: var(--bg2); border-radius: 99px;
+      overflow: hidden; margin-top: 8px;
+    }
+    .bar-fill {
+      height: 100%; width: 0; border-radius: 99px;
+      background: linear-gradient(90deg, var(--indigo-l), var(--indigo));
+      transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ── TIMELINE ── */
+    .tl { position: relative; padding-left: 28px; }
+    .tl::before {
+      content: ''; position: absolute;
+      left: 5px; top: 10px; bottom: 0;
+      width: 1.5px; background: var(--border);
+    }
+    .tl-dot {
+      position: absolute; left: 0; top: 8px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: var(--indigo); border: 2px solid var(--bg);
+      box-shadow: 0 0 0 3px var(--indigo-b);
+    }
+
+    /* ── CONTACT ROW ── */
+    .c-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 0; border-bottom: 1px solid var(--border);
+      text-decoration: none; transition: opacity 0.2s;
+      cursor: pointer;
+    }
+    .c-row:last-child { border-bottom: none; }
+    .c-row:hover { opacity: 0.7; }
+    .c-icon {
+      width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+      border: 1px solid var(--border); background: var(--bg2);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 10px 20px; border-radius: 10px;
+      font-size: 0.84rem; font-weight: 600; cursor: pointer;
+      text-decoration: none; transition: all 0.2s; white-space: nowrap;
+    }
+    .btn-primary { background: var(--indigo); color: #fff; border: 1px solid var(--indigo); }
+    .btn-primary:hover { background: #4338ca; border-color: #4338ca; box-shadow: 0 4px 14px rgba(79,70,229,0.3); }
+    .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: var(--bg2); border-color: var(--border2); }
+    .btn-green { background: var(--green); color: #fff; border: 1px solid var(--green); }
+    .btn-green:hover { background: #047857; border-color: #047857; box-shadow: 0 4px 14px rgba(5,150,105,0.25); }
+
+    /* ── AVATAR ── */
+    .avatar {
+      width: 88px; height: 88px; border-radius: 20px; flex-shrink: 0;
+      background: var(--indigo-bg); border: 2px solid var(--indigo-b);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fira Code', monospace; font-size: 1.6rem; font-weight: 700;
+      color: var(--indigo); letter-spacing: -0.04em;
+      overflow: hidden;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* ── HERO PHOTO ── */
+    .hero-photo {
+      width: 100%; max-width: 380px;
+      aspect-ratio: 4/5;
+      border-radius: 24px;
+      object-fit: cover;
+      object-position: center top;
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 48px rgba(0,0,0,0.1);
+      display: block;
+    }
+    .hero-photo-wrap {
+      position: relative; display: flex; justify-content: center;
+    }
+    .hero-photo-wrap::after {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: 24px;
+      background: linear-gradient(to bottom, transparent 60%, rgba(250,250,250,0.6) 100%);
+      pointer-events: none;
+    }
+
+    /* ── HERO GRID ── */
+    .hero-grid { display: grid; grid-template-columns: 1fr 360px; gap: 72px; align-items: center; }
+
+    /* ── SKILLS GRID ── */
+    .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+
+    /* ── CERT GRID ── */
+    .cert-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+
+    /* ── CONTACT GRID ── */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+
+    /* ── SOFT SKILL ROW ── */
+    .soft-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px; border-radius: 10px;
+      border: 1px solid var(--border); background: var(--surface);
+      transition: all 0.2s;
+    }
+    .soft-row:hover { border-color: var(--indigo-b); background: var(--indigo-bg); }
+    .soft-icon {
+      width: 36px; height: 36px; border-radius: 9px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    }
+
+    /* ── CERT CARD ── */
+    .cert-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px;
+      transition: all 0.25s;
+    }
+    .cert-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); border-color: var(--border2); }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── PULSE DOT ── */
+    .pulse-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 3px var(--green-b);
+      animation: pulse-anim 2s ease-in-out infinite;
+    }
+    @keyframes pulse-anim {
+      0%,100% { box-shadow: 0 0 0 3px var(--green-b); }
+      50% { box-shadow: 0 0 0 6px rgba(5,150,105,0.1); }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--surface); border-top: 1px solid var(--border);
+      padding: 36px 32px;
+    }
+    .foot-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    }
+
+    /* ── PROJECT CARDS ── */
+    .proj-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .proj-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.25s;
+      display: flex;
+      flex-direction: column;
+    }
+    .proj-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      border-color: var(--border2);
+      transform: translateY(-3px);
+    }
+    .proj-img {
+      height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .proj-img-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .proj-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .proj-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: auto;
+    }
+    .proj-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 7px 13px; border-radius: 8px;
+      font-size: 0.75rem; font-weight: 600;
+      text-decoration: none; transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .proj-btn-solid {
+      background: var(--indigo); color: #fff;
+      border: 1px solid var(--indigo);
+    }
+    .proj-btn-solid:hover { background: #4338ca; border-color: #4338ca; }
+    .proj-btn-ghost {
+      background: transparent; color: var(--sub);
+      border: 1px solid var(--border2);
+    }
+    .proj-btn-ghost:hover { color: var(--bright); border-color: var(--border2); background: var(--bg2); }
+
+    @media (max-width: 900px) {
+      .proj-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .proj-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── RESPONSIVE ── */
+
+    /* Tablet: 768px – 1024px */
+    @media (max-width: 1024px) {
+      .hero-grid { grid-template-columns: 1fr 300px; gap: 48px; }
+      .wrap { padding: 0 24px; }
+    }
+
+    /* Mobile landscape / small tablet: ≤ 900px */
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      /* Сүрөт мобилде жогорку бөлүктө чыксын */
+      .hero-right {
+        display: flex !important;
+        justify-content: center;
+        order: -1;          /* текстке чейин */
+      }
+      .hero-photo {
+        max-width: 220px;
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        object-position: center top;
+      }
+      .hero-photo-wrap::after { display: none; }
+      /* floating элементтерди жашыр */
+      .hero-float-card,
+      .hero-float-badge { display: none !important; }
+      /* photo wrap'тин padding убактылуу алып ташта */
+      .hero-right > div { padding-bottom: 0 !important; }
+
+      .skills-grid  { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .cert-grid    { grid-template-columns: 1fr 1fr; }
+      .ab-grid      { grid-template-columns: 1fr !important; }
+    }
+
+    /* Phone: ≤ 640px */
+    @media (max-width: 640px) {
+      .nav-links, .nav-cta { display: none; }
+      #burger { display: flex; }
+      .wrap    { padding: 0 16px; }
+      section  { padding: 64px 0; }
+      #hero    { padding-top: 90px !important; padding-bottom: 60px !important; }
+      .divider { margin: 0 16px; }
+
+      h1 { font-size: clamp(2rem, 8vw, 2.6rem); }
+      h2 { font-size: clamp(1.5rem, 6vw, 2rem); }
+
+      .hero-photo { max-width: 200px; }
+
+      .cert-grid { grid-template-columns: 1fr; }
+
+      /* stats жатык эмес — wrap болсун */
+      .stat-num { font-size: 2rem; }
+
+      /* card padding кичирейтүү */
+      .card { padding: 20px; }
+      .cert-card { padding: 18px; }
+
+      /* nav inner */
+      .nav-inner { padding: 0 16px; }
+      footer { padding: 24px 16px; }
+    }
+
+    /* Stats row mobile fix */
+    @media (max-width: 500px) {
+      .stats-row {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 20px !important;
+        padding-top: 24px !important;
+        margin-top: 32px !important;
+      }
+      .stats-row > div {
+        padding: 0 !important;
+        border: none !important;
+      }
+    }
+
+    /* Very small: ≤ 380px */
+    @media (max-width: 380px) {
+      .hero-photo { max-width: 160px; }
+      h1 { font-size: 1.9rem; }
+      .btn { padding: 9px 14px; font-size: 0.78rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════
+     NAVBAR
+══════════════════════════════ -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#hero" class="logo">Nursultan<span>.</span></a>
+    <div class="nav-links">
+      <a href="#about"      class="nav-lnk">Жөнүмдө</a>
+      <a href="#skills"     class="nav-lnk">Көндүмдөр</a>
+      <a href="#experience" class="nav-lnk">Тажрыйба</a>
+      <a href="#projects"   class="nav-lnk">Долбоорлор</a>
+      <a href="#certs"      class="nav-lnk">Сертификаттар</a>
+      <a href="#contact"    class="nav-lnk">Байланыш</a>
+    </div>
+    <a href="mailto:najimidinovnursultan07@gmail.com" class="nav-cta">Жаз мага →</a>
+    <button id="burger" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div id="mob-menu">
+    <a href="#about">Жөнүмдө</a>
+    <a href="#skills">Көндүмдөр</a>
+    <a href="#experience">Тажрыйба</a>
+    <a href="#projects">Долбоорлор</a>
+    <a href="#certs">Сертификаттар</a>
+    <a href="#contact">Байланыш</a>
+    <a href="mailto:najimidinovnursultan07@gmail.com" style="background:var(--indigo-bg);color:var(--indigo);margin-top:4px;">Жаз мага →</a>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════════
+     HERO
+══════════════════════════════ -->
+<section id="hero" style="padding-top:140px; padding-bottom:100px;">
+  <div class="wrap">
+    <div class="hero-grid">
+
+      <!-- LEFT -->
+      <div>
+        <!-- Status -->
+        <div class="reveal" style="display:flex;align-items:center;gap:10px;margin-bottom:28px;">
+          <span class="pulse-dot"></span>
+          <span style="font-size:0.8rem;color:var(--sub);">Жеткиликтүү — фриланс &amp; менторство</span>
+        </div>
+
+        <!-- Name -->
+        <div class="reveal" style="transition-delay:.05s">
+          <h1>Nursultan<br/><span style="color:var(--indigo);">Najimidinov</span></h1>
+        </div>
+
+        <!-- Role + desc -->
+        <div class="reveal" style="transition-delay:.1s;margin-top:16px;">
+          <p class="lead" style="max-width:520px;">
+            Frontend Developer &amp; Mentor. <strong>HTML, CSS, JavaScript, React жана Next.js</strong>
+            менен заманбап веб-продукттар жасайм — ошондой эле
+            <strong>50+ студентке</strong> веб-разработканы үйрөтөм.
+          </p>
+        </div>
+
+        <!-- Buttons -->
+        <div class="reveal" style="transition-delay:.15s;display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;">
+          <a href="#contact"  class="btn btn-primary">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            Байланышуу
+          </a>
+          <a href="https://wa.me/996708887776" target="_blank" rel="noopener" class="btn btn-green">
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+          <a href="#skills" class="btn btn-secondary">Портфолио ↓</a>
+        </div>
+
+        <!-- Stats -->
+        <div class="reveal stats-row" style="transition-delay:.2s;display:flex;flex-wrap:wrap;gap:0;margin-top:48px;padding-top:32px;border-top:1px solid var(--border);">
+          <div style="padding-right:32px;border-right:1px solid var(--border);">
+            <p class="stat-num">50<span style="color:var(--indigo);">+</span></p>
+            <p class="stat-label">Студент</p>
+          </div>
+          <div style="padding:0 32px;border-right:1px solid var(--border);">
+            <p class="stat-num">3</p>
+            <p class="stat-label">Сертификат</p>
+          </div>
+          <div style="padding-left:32px;">
+            <p class="stat-num">9<span style="color:var(--indigo);">+</span></p>
+            <p class="stat-label">Ай тажрыйба</p>
+          </div>
+          <div style="padding-left:32px;border-left:1px solid var(--border);">
+            <p class="stat-num">9<span style="color:var(--indigo);">+</span></p>
+            <p class="stat-label">Долбоор</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT photo -->
+      <div class="hero-right reveal" style="transition-delay:.25s;">
+        <div style="position:relative; padding-bottom: 30px;">
+
+          <!-- Main photo -->
+          <div class="hero-photo-wrap">
+            <img
+              src="photo.jpg"
+              alt="Nursultan Najimidinov"
+              class="hero-photo"
+              onerror="this.closest('.hero-photo-wrap').innerHTML=fallbackAvatar();"
+            />
+          </div>
+
+          <!-- Floating card — bottom (desktop only) -->
+          <div class="hero-float-card" style="
+            position:absolute; bottom:-20px; left:50%; transform:translateX(-50%);
+            background:var(--surface); border:1px solid var(--border);
+            border-radius:14px; padding:14px 20px;
+            box-shadow:0 8px 28px rgba(0,0,0,0.09);
+            display:flex; align-items:center; gap:14px;
+            white-space:nowrap; min-width:260px;
+          ">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span class="pulse-dot" style="width:8px;height:8px;"></span>
+              <span style="font-size:0.78rem;color:var(--green);font-weight:600;">Жеткиликтүү</span>
+            </div>
+            <div style="width:1px;height:20px;background:var(--border);"></div>
+            <div>
+              <p style="font-size:0.78rem;font-weight:700;color:var(--bright);">Nursultan Najimidinov</p>
+              <p style="font-size:0.7rem;color:var(--muted);">Frontend Dev &amp; Mentor</p>
+            </div>
+          </div>
+
+          <!-- Floating badge — top right (desktop only) -->
+          <div class="hero-float-badge" style="
+            position:absolute; top:16px; right:-10px;
+            background:var(--indigo); color:#fff;
+            border-radius:10px; padding:8px 14px;
+            box-shadow:0 4px 16px rgba(79,70,229,0.35);
+            font-size:0.75rem; font-weight:700;
+          ">
+            50+ студент
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ══════════════════════════════
+     ABOUT
+══════════════════════════════ -->
+<section id="about">
+  <div class="wrap">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;" class="ab-grid">
+
+      <!-- Left -->
+      <div class="reveal">
+        <p class="label">Жөнүмдө</p>
+        <h2 style="margin-bottom:20px;">Ким мен?</h2>
+        <div style="display:flex;flex-direction:column;gap:14px;" class="body">
+          <p>Мен — <strong>Nursultan Najimidinov</strong>, Бишкектен Frontend разработчик жана Окурмэн IT академиясынын ментору.</p>
+          <p><strong>HTML, CSS, JavaScript, React жана Next.js</strong> технологияларын колдонуп, заманбап адаптивдүү веб-продукттарды жасайм. Landing page, веб-тиркеме же PWA — баарын нөлдөн баштап кесипкөйлүк менен.</p>
+          <p><strong>50дөн ашык студент</strong> менин жетекчилигимде веб-программалоонун негиздерин өздөштүрүп, практикалык долбоорлорун ийгиликтүү ишке ашырды.</p>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;">
+          <span class="badge badge-indigo">Frontend Developer</span>
+          <span class="badge badge-green">Mentor</span>
+          <span class="badge badge-violet">PWA</span>
+          <span class="badge badge-amber">Freelancer</span>
+        </div>
+      </div>
+
+      <!-- Right: code snippet -->
+      <div class="reveal" style="transition-delay:.08s;">
+        <div style="background:#1e1e2e;border-radius:14px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.12);">
+          <!-- Window bar -->
+          <div style="display:flex;align-items:center;gap:7px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.03);">
+            <span style="width:11px;height:11px;border-radius:50%;background:#ff5f57;"></span>
+            <span style="width:11px;height:11px;border-radius:50%;background:#febc2e;"></span>
+            <span style="width:11px;height:11px;border-radius:50%;background:#28c840;"></span>
+            <span style="font-family:'Fira Code',monospace;font-size:0.68rem;color:rgba(255,255,255,0.3);margin-left:8px;">nursultan.js</span>
+          </div>
+          <div style="padding:22px;font-family:'Fira Code',monospace;font-size:0.8rem;line-height:1.9;color:rgba(255,255,255,0.55);">
+            <p><span style="color:#c792ea;">const</span> <span style="color:#82aaff;">me</span> <span style="color:rgba(255,255,255,0.4);">=</span> {</p>
+            <p style="padding-left:20px;"><span style="color:#c3e88d;">name</span><span style="color:rgba(255,255,255,0.3);">:</span> <span style="color:#f78c6c;">"Nursultan Najimidinov"</span>,</p>
+            <p style="padding-left:20px;"><span style="color:#c3e88d;">role</span><span style="color:rgba(255,255,255,0.3);">:</span> <span style="color:#f78c6c;">"Frontend Dev & Mentor"</span>,</p>
+            <p style="padding-left:20px;"><span style="color:#c3e88d;">location</span><span style="color:rgba(255,255,255,0.3);">:</span> <span style="color:#f78c6c;">"Bishkek, KG"</span>,</p>
+            <p style="padding-left:20px;"><span style="color:#c3e88d;">stack</span><span style="color:rgba(255,255,255,0.3);">:</span> [<span style="color:#f78c6c;">"React"</span>, <span style="color:#f78c6c;">"Next.js"</span>, <span style="color:#f78c6c;">"PWA"</span>],</p>
+            <p style="padding-left:20px;"><span style="color:#c3e88d;">students</span><span style="color:rgba(255,255,255,0.3);">:</span> <span style="color:#f78c6c;">50</span>,</p>
+            <p style="padding-left:20px;"><span style="color:#c3e88d;">available</span><span style="color:rgba(255,255,255,0.3);">:</span> <span style="color:#89ddff;">true</span> <span style="color:rgba(255,255,255,0.2);">// ✅</span></p>
+            <p>};</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ══════════════════════════════
+     SKILLS
+══════════════════════════════ -->
+<section id="skills">
+  <div class="wrap">
+    <div class="reveal" style="margin-bottom:40px;">
+      <p class="label">Көндүмдөр</p>
+      <h2>Технологиялар</h2>
+    </div>
+
+    <div class="skills-grid">
+
+      <!-- Bars -->
+      <div class="card reveal" style="transition-delay:.05s;">
+        <p style="font-size:0.78rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:22px;">Техникалык деңгээл</p>
+        <div style="display:flex;flex-direction:column;gap:20px;">
+
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:0.84rem;font-weight:500;color:var(--text);">HTML5 &amp; CSS3</span>
+              <span style="font-size:0.72rem;font-family:'Fira Code',monospace;color:var(--muted);">95%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" data-w="95"></div></div>
+          </div>
+
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:0.84rem;font-weight:500;color:var(--text);">JavaScript (ES6+)</span>
+              <span style="font-size:0.72rem;font-family:'Fira Code',monospace;color:var(--muted);">88%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" data-w="88"></div></div>
+          </div>
+
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:0.84rem;font-weight:500;color:var(--text);">React</span>
+              <span style="font-size:0.72rem;font-family:'Fira Code',monospace;color:var(--muted);">85%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" data-w="85"></div></div>
+          </div>
+
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:0.84rem;font-weight:500;color:var(--text);">Next.js</span>
+              <span style="font-size:0.72rem;font-family:'Fira Code',monospace;color:var(--muted);">80%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" data-w="80"></div></div>
+          </div>
+
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:0.84rem;font-weight:500;color:var(--text);">Адаптивдүү дизайн</span>
+              <span style="font-size:0.72rem;font-family:'Fira Code',monospace;color:var(--muted);">92%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" data-w="92"></div></div>
+          </div>
+
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:0.84rem;font-weight:500;color:var(--text);">PWA разработка</span>
+              <span style="font-size:0.72rem;font-family:'Fira Code',monospace;color:var(--muted);">78%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" data-w="78"></div></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right column -->
+      <div style="display:flex;flex-direction:column;gap:20px;">
+
+        <!-- Tags -->
+        <div class="card reveal" style="transition-delay:.1s;">
+          <p style="font-size:0.78rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Технологиялар стеки</p>
+          <div style="display:flex;flex-wrap:wrap;gap:7px;">
+            <span class="tag">HTML5</span><span class="tag">CSS3</span>
+            <span class="tag">JavaScript</span><span class="tag">ES6+</span>
+            <span class="tag">React</span><span class="tag">Next.js</span>
+            <span class="tag">Tailwind</span><span class="tag">PWA</span>
+            <span class="tag">Git</span><span class="tag">Figma</span>
+            <span class="tag">REST API</span><span class="tag">Responsive</span>
+          </div>
+        </div>
+
+        <!-- Soft -->
+        <div class="card reveal" style="transition-delay:.14s;">
+          <p style="font-size:0.78rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">Башка Көндүмдөр</p>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div class="soft-row">
+              <div class="soft-icon" style="background:var(--indigo-bg);">🎓</div>
+              <div>
+                <p style="font-size:0.84rem;font-weight:600;color:var(--bright);">Менторство</p>
+                <p style="font-size:0.75rem;color:var(--muted);">50+ студент, практикалык долбоорлор</p>
+              </div>
+            </div>
+            <div class="soft-row">
+              <div class="soft-icon" style="background:var(--green-bg);">💼</div>
+              <div>
+                <p style="font-size:0.84rem;font-weight:600;color:var(--bright);">Фриланс разработка</p>
+                <p style="font-size:0.75rem;color:var(--muted);">Бизнес ээлери үчүн сайттар</p>
+              </div>
+            </div>
+            <div class="soft-row">
+              <div class="soft-icon" style="background:var(--violet-bg);">🎨</div>
+              <div>
+                <p style="font-size:0.84rem;font-weight:600;color:var(--bright);">UI/UX дизайн</p>
+                <p style="font-size:0.75rem;color:var(--muted);">Колдонуучуга ыңгайлуу интерфейс</p>
+              </div>
+            </div>
+            <div class="soft-row">
+              <div class="soft-icon" style="background:var(--amber-bg);">💬</div>
+              <div>
+                <p style="font-size:0.84rem;font-weight:600;color:var(--bright);">Клиент менен иш</p>
+                <p style="font-size:0.75rem;color:var(--muted);">Коммуникация жана башкаруу</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ══════════════════════════════
+     EXPERIENCE
+══════════════════════════════ -->
+<section id="experience">
+  <div class="wrap">
+    <div class="reveal" style="margin-bottom:40px;">
+      <p class="label">Тажрыйба</p>
+      <h2>Иш тарых &amp; Долбоорлор</h2>
+    </div>
+
+    <div class="tl reveal" style="transition-delay:.06s;">
+      <div class="tl-dot"></div>
+
+      <div class="card" style="margin-bottom:20px;">
+        <!-- Header -->
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+          <div>
+            <h3 style="font-size:1.05rem;margin-bottom:4px;">Frontend Developer &amp; Frontend Mentor</h3>
+            <p style="font-size:0.85rem;color:var(--indigo);font-weight:600;">Окурмэн IT Академиясы</p>
+          </div>
+          <span class="badge badge-indigo">Фев 2026 — Ноя 2026</span>
+        </div>
+
+        <!-- Tasks -->
+        <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <span style="color:var(--indigo);font-size:0.7rem;margin-top:5px;flex-shrink:0;">▶</span>
+            <p class="body">Студенттерге HTML, CSS, JavaScript, React жана Next.js үйрөтүү</p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <span style="color:var(--indigo);font-size:0.7rem;margin-top:5px;flex-shrink:0;">▶</span>
+            <p class="body">Практикалык долбоорлорго жетекчилик кылуу жана код жазууга багыт берүү</p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <span style="color:var(--indigo);font-size:0.7rem;margin-top:5px;flex-shrink:0;">▶</span>
+            <p class="body">Бизнес ээлери үчүн заманбап веб-сайттар жана тиркемелерди нөлдөн баштап түзүү</p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <span style="color:var(--indigo);font-size:0.7rem;margin-top:5px;flex-shrink:0;">▶</span>
+            <p class="body">Менторлордун иш процесстерин автоматташтыруу үчүн веб-платформа иштеп чыгуу</p>
+          </div>
+        </div>
+
+        <!-- Tags -->
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="tag">React</span>
+          <span class="tag">Next.js</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">Mentoring</span>
+          <span class="tag">PWA</span>
+          <span class="tag">UI/UX</span>
+        </div>
+      </div>
+
+      <!-- Hobbies -->
+      <div style="padding:18px 24px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);">
+        <p style="font-size:0.75rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Хоббилер</p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:7px;">
+            <span style="font-size:1rem;">💻</span>
+            <span class="body" style="font-size:0.84rem;">Программирование</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;">
+            <span style="font-size:1rem;">🎨</span>
+            <span class="body" style="font-size:0.84rem;">Веб-дизайн</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;">
+            <span style="font-size:1rem;">🚀</span>
+            <span class="body" style="font-size:0.84rem;">Фриланс-проекты</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── PROJECTS ── -->
+    <div class="reveal" style="margin-top:64px;margin-bottom:24px;">
+      <p class="label">Долбоорлор</p>
+      <h2 style="margin-bottom:8px;">Жасаган проекттерим</h2>
+      <p class="body" style="max-width:520px;">Реалдуу бизнес ээлери жана студенттер үчүн иштеп чыккан долбоорлор</p>
+    </div>
+
+    <div id="projects" class="proj-grid reveal" style="transition-delay:.05s;">
+
+      <!-- Project 1: LinguaBridge -->
+      <div class="proj-card">
+        <div class="proj-img" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a5f 100%);">
+          <div class="proj-img-inner">
+            <div style="width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,#3b2f8c,#1a56a0);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;color:#fff;letter-spacing:-0.03em;border:2px solid rgba(255,255,255,0.15);">LB</div>
+            <span style="font-size:0.85rem;color:#fff;font-weight:700;margin-top:8px;">LinguaBridge</span>
+            <span style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-top:2px;">Изучайте немецкий и английский</span>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px;">
+            <h3 style="font-size:0.95rem;line-height:1.4;">LinguaBridge</h3>
+            <span class="badge badge-green" style="flex-shrink:0;">Live</span>
+          </div>
+          <p class="body" style="font-size:0.8rem;margin-bottom:12px;">Немис жана англис тилдерин үйрөнүүгө арналган заманбап веб-сайт. Колдонуучулар тил үйрөнүү материалдары жана пайдалуу маалыматтар менен таанышат.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;">
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">HTML</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">CSS</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">JavaScript</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">React</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">Vercel</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://deutschland-psi.vercel.app" target="_blank" rel="noopener" class="proj-btn proj-btn-solid">
+              <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              Live сайт
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2: AI Student PRO -->
+      <div class="proj-card">
+        <div class="proj-img" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+          <div class="proj-img-inner">
+            <div style="width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,#2563eb,#0ea5e9);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;color:#fff;border:2px solid rgba(255,255,255,0.15);">AI</div>
+            <span style="font-size:0.85rem;color:#fff;font-weight:700;margin-top:8px;">AI Student PRO</span>
+            <span style="font-size:0.7rem;color:rgba(255,255,255,0.45);margin-top:2px;">Telegram Mini App</span>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px;">
+            <h3 style="font-size:0.95rem;line-height:1.4;">AI Student PRO</h3>
+            <span class="badge badge-indigo" style="flex-shrink:0;">Live</span>
+          </div>
+          <p class="body" style="font-size:0.8rem;margin-bottom:12px;">Telegram Mini App форматында иштеген AI жардамчы. Студенттерге окуу процессинде маалымат издөө, суроолорго жооп алуу жана AI мүмкүнчүлүктөрүн колдонуу үчүн.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;">
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">HTML</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">CSS</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">JavaScript</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">Telegram API</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">Mini App</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://ai-student-5bv2.vercel.app" target="_blank" rel="noopener" class="proj-btn proj-btn-solid">
+              <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              Live сайт
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3: Обшепит сайттар -->
+      <div class="proj-card">
+        <div class="proj-img" style="background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%);">
+          <div class="proj-img-inner">
+            <span style="font-size:2.2rem;">🍽️</span>
+            <span style="font-size:0.85rem;color:#c2410c;font-weight:700;margin-top:6px;">Обшепит сайттары</span>
+            <span style="font-size:0.7rem;color:#ea580c;margin-top:2px;">4 долбоор</span>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px;">
+            <h3 style="font-size:0.95rem;line-height:1.4;">Кафе &amp; Ресторан Сайттары</h3>
+            <span class="badge badge-amber" style="flex-shrink:0;">×4</span>
+          </div>
+          <p class="body" style="font-size:0.8rem;margin-bottom:12px;">Кафе жана ресторандар үчүн жасалган 4 веб-сайт. Меню, онлайн заказ, жайгашуу жана байланыш маалыматтары менен адаптивдүү дизайн.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;">
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">HTML5</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">CSS3</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">JavaScript</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">Responsive</span>
+          </div>
+          <div class="proj-links">
+            <span class="proj-btn" style="background:var(--amber-bg);color:var(--amber);border:1px solid #fde68a;cursor:default;">
+              4 долбоор жасалды
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 4: Суши сайттар -->
+      <div class="proj-card">
+        <div class="proj-img" style="background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%);">
+          <div class="proj-img-inner">
+            <span style="font-size:2.2rem;">🍣</span>
+            <span style="font-size:0.85rem;color:#15803d;font-weight:700;margin-top:6px;">Суши сайттары</span>
+            <span style="font-size:0.7rem;color:#16a34a;margin-top:2px;">3 долбоор</span>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px;">
+            <h3 style="font-size:0.95rem;line-height:1.4;">Суши Ресторандар</h3>
+            <span class="badge badge-green" style="flex-shrink:0;">×3</span>
+          </div>
+          <p class="body" style="font-size:0.8rem;margin-bottom:12px;">Суши ресторандары үчүн жасалган 3 веб-сайт. Азыяча дизайн стилинде меню, жеткирүү маалыматтары жана онлайн заказ системасы.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;">
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">HTML5</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">CSS3</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">JavaScript</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">UI/UX</span>
+          </div>
+          <div class="proj-links">
+            <span class="proj-btn" style="background:var(--green-bg);color:var(--green);border:1px solid var(--green-b);cursor:default;">
+              3 долбоор жасалды
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 5: Морепродукты -->
+      <div class="proj-card">
+        <div class="proj-img" style="background: linear-gradient(135deg, #eff6ff 0%, #bfdbfe 100%);">
+          <div class="proj-img-inner">
+            <span style="font-size:2.2rem;">🦐</span>
+            <span style="font-size:0.85rem;color:#1d4ed8;font-weight:700;margin-top:6px;">Морепродукты</span>
+            <span style="font-size:0.7rem;color:#2563eb;margin-top:2px;">1 долбоор</span>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px;">
+            <h3 style="font-size:0.95rem;line-height:1.4;">Морепродукты Сайты</h3>
+            <span class="badge badge-indigo" style="flex-shrink:0;">×1</span>
+          </div>
+          <p class="body" style="font-size:0.8rem;margin-bottom:12px;">Деңиз азык-түлүктөрүн сатуу компаниясы үчүн веб-сайт. Каталог, баалар, жеткирүү шарттары жана байланыш маалыматтары.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;">
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">HTML5</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">CSS3</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">JavaScript</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">Responsive</span>
+          </div>
+          <div class="proj-links">
+            <span class="proj-btn" style="background:var(--indigo-bg);color:var(--indigo);border:1px solid var(--indigo-b);cursor:default;">
+              1 долбоор жасалды
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 6: Mentor Platform -->
+      <div class="proj-card">
+        <div class="proj-img" style="background: linear-gradient(135deg, #f5f3ff 0%, #ddd6fe 100%);">
+          <div class="proj-img-inner">
+            <span style="font-size:2.2rem;">🎓</span>
+            <span style="font-size:0.85rem;color:#7c3aed;font-weight:700;margin-top:6px;">Ментор Платформасы</span>
+            <span style="font-size:0.7rem;color:#8b5cf6;margin-top:2px;">Окурмэн IT</span>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px;">
+            <h3 style="font-size:0.95rem;line-height:1.4;">Ментор Жумуш Платформасы</h3>
+            <span class="badge badge-violet" style="flex-shrink:0;">Internal</span>
+          </div>
+          <p class="body" style="font-size:0.8rem;margin-bottom:12px;">Окурмэн IT академиясынын менторлору үчүн иш процессти автоматташтыруу платформасы. Студент прогресси, тапшырмалар жана баалоо системасы.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;">
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">React</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">Next.js</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">Tailwind</span>
+            <span class="tag" style="font-size:0.68rem;padding:3px 8px;">PWA</span>
+          </div>
+          <div class="proj-links">
+            <span class="proj-btn" style="background:var(--violet-bg);color:var(--violet);border:1px solid #ddd6fe;cursor:default;">
+              Академия үчүн
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ══════════════════════════════
+     CERTIFICATES
+══════════════════════════════ -->
+<section id="certs">
+  <div class="wrap">
+
+    <div class="reveal" style="margin-bottom:36px;">
+      <p class="label">Жетишкендиктер</p>
+      <h2>Сертификаттар</h2>
+    </div>
+
+    <!-- Big achievement -->
+    <div class="reveal card" style="transition-delay:.04s;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-bottom:20px;background:var(--indigo-bg);border-color:var(--indigo-b);">
+      <div style="display:flex;align-items:center;gap:18px;">
+        <div style="width:52px;height:52px;border-radius:14px;background:var(--indigo);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">🎓</div>
+        <div>
+          <h3 style="margin-bottom:4px;">50+ Студент</h3>
+          <p class="body" style="font-size:0.84rem;max-width:480px;">Менин жетекчилигимде 50дөн ашык студент веб-разработканы өздөштүрүп, практикалык долбоорлорун ийгиликтүү ишке ашырды.</p>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <p class="stat-num" style="color:var(--indigo);">50<span style="font-size:1.8rem;">+</span></p>
+        <p class="stat-label">жетишкен студент</p>
+      </div>
+    </div>
+
+    <!-- 3 cards -->
+    <div class="cert-grid">
+
+      <div class="cert-card reveal" style="transition-delay:.07s;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <span style="font-size:1.6rem;">🥇</span>
+          <span class="badge badge-amber">Июль 2026</span>
+        </div>
+        <h3 style="margin-bottom:8px;font-size:0.95rem;">Золотой Сертификат</h3>
+        <p class="body" style="font-size:0.8rem;">Frontend багыты боюнча жогорку көрсөткүчтөр үчүн берилди.</p>
+        <p style="font-size:0.72rem;color:var(--muted);margin-top:14px;font-weight:500;">🏫 Окурмэн IT Академиясы</p>
+      </div>
+
+      <div class="cert-card reveal" style="transition-delay:.1s;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <span style="font-size:1.6rem;">🏆</span>
+          <span class="badge badge-violet">Август 2026</span>
+        </div>
+        <h3 style="margin-bottom:8px;font-size:0.95rem;">Лучший Ментор</h3>
+        <p class="body" style="font-size:0.8rem;">Жогорку профессионализм жана студенттерди окутууга кошкон салым үчүн.</p>
+        <p style="font-size:0.72rem;color:var(--muted);margin-top:14px;font-weight:500;">🏫 Окурмэн IT Академиясы</p>
+      </div>
+
+      <div class="cert-card reveal" style="transition-delay:.13s;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <span style="font-size:1.6rem;">⚙️</span>
+          <span class="badge badge-green">Сентябрь 2026</span>
+        </div>
+        <h3 style="margin-bottom:8px;font-size:0.95rem;">Облегчение Работы</h3>
+        <p class="body" style="font-size:0.8rem;">Менторлор үчүн иш процессти автоматташтыруу веб-платформасы үчүн.</p>
+        <p style="font-size:0.72rem;color:var(--muted);margin-top:14px;font-weight:500;">🏫 Окурмэн IT Академиясы</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ══════════════════════════════
+     CONTACT
+══════════════════════════════ -->
+<section id="contact" style="padding-bottom:80px;">
+  <div class="wrap">
+
+    <div class="reveal" style="margin-bottom:40px;">
+      <p class="label">Байланыш</p>
+      <h2>Жазыңыз</h2>
+    </div>
+
+    <div class="contact-grid">
+
+      <!-- Links -->
+      <div class="card reveal" style="transition-delay:.05s;padding:8px 16px;">
+
+        <a href="https://wa.me/996708887776" target="_blank" rel="noopener" class="c-row">
+          <div class="c-icon" style="background:var(--green-bg);border-color:var(--green-b);">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" style="color:var(--green);"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </div>
+          <div style="flex:1;">
+            <p style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px;">WhatsApp</p>
+            <p style="font-size:0.9rem;font-weight:600;color:var(--bright);">+996 708 88 77 76</p>
+          </div>
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color:var(--muted);flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </a>
+
+        <a href="mailto:najimidinovnursultan07@gmail.com" class="c-row">
+          <div class="c-icon" style="background:var(--indigo-bg);border-color:var(--indigo-b);">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color:var(--indigo);"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <p style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px;">Email</p>
+            <p style="font-size:0.82rem;font-weight:600;color:var(--bright);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">najimidinovnursultan07@gmail.com</p>
+          </div>
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color:var(--muted);flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </a>
+
+        <a href="tel:+996708887776" class="c-row">
+          <div class="c-icon">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color:var(--sub);"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+          </div>
+          <div style="flex:1;">
+            <p style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px;">Телефон</p>
+            <p style="font-size:0.9rem;font-weight:600;color:var(--bright);">+996 708 88 77 76</p>
+          </div>
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color:var(--muted);flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </a>
+
+        <div class="c-row" style="cursor:default;">
+          <div class="c-icon">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color:var(--sub);"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+          <div>
+            <p style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px;">Жайгашуу</p>
+            <p style="font-size:0.9rem;font-weight:600;color:var(--bright);">Бишкек, Кыргызстан</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CTA card -->
+      <div class="card reveal" style="transition-delay:.1s;background:var(--indigo-bg);border-color:var(--indigo-b);">
+        <div style="width:48px;height:48px;border-radius:12px;background:var(--indigo);display:flex;align-items:center;justify-content:center;margin-bottom:18px;">
+          <svg width="20" height="20" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <h3 style="font-size:1.1rem;margin-bottom:10px;">Сиздин долбооруңузга даярмын</h3>
+        <p class="body" style="font-size:0.85rem;margin-bottom:20px;">
+          Веб-сайт, Landing page, React тиркемеси же PWA — каалаган долбоорду кесипкөйлүк менен ишке ашырам.
+        </p>
+
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:22px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="color:var(--indigo);flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            <span class="body" style="font-size:0.82rem;">Заманбап, адаптивдүү дизайн</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="color:var(--indigo);flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            <span class="body" style="font-size:0.82rem;">React / Next.js / PWA технологиялары</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="color:var(--indigo);flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            <span class="body" style="font-size:0.82rem;">Долбоордон кийинки колдоо</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="https://wa.me/996708887776" target="_blank" rel="noopener" class="btn btn-primary">
+            <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+          <a href="mailto:najimidinovnursultan07@gmail.com" class="btn btn-secondary">Email жазуу</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     FOOTER
+══════════════════════════════ -->
+<footer>
+  <div class="foot-inner">
+    <a href="#hero" class="logo" style="font-size:0.92rem;">Nursultan<span>.</span></a>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+      <a href="#about"      class="nav-lnk" style="font-size:0.78rem;">Жөнүмдө</a>
+      <a href="#skills"     class="nav-lnk" style="font-size:0.78rem;">Көндүмдөр</a>
+      <a href="#experience" class="nav-lnk" style="font-size:0.78rem;">Тажрыйба</a>
+      <a href="#contact"    class="nav-lnk" style="font-size:0.78rem;">Байланыш</a>
+    </div>
+    <p style="font-size:0.75rem;color:var(--muted);">© 2026 Nursultan Najimidinov</p>
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════════
+     JAVASCRIPT
+══════════════════════════════ -->
+<script>
+  /* fallback if photo.jpg missing */
+  function fallbackAvatar() {
+    return `<div style="width:100%;max-width:380px;aspect-ratio:4/5;border-radius:24px;background:var(--indigo-bg);border:1px solid var(--indigo-b);display:flex;align-items:center;justify-content:center;font-family:'Fira Code',monospace;font-size:3rem;font-weight:700;color:var(--indigo);">NN</div>`;
+  }
+
+  /* navbar */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 10), { passive: true });
+
+  /* hamburger */
+  const burger = document.getElementById('burger');
+  const mobMenu = document.getElementById('mob-menu');
+  burger.addEventListener('click', () => {
+    const open = mobMenu.classList.toggle('open');
+    const s = burger.querySelectorAll('span');
+    s[0].style.transform = open ? 'translateY(6.5px) rotate(45deg)' : '';
+    s[1].style.opacity   = open ? '0' : '';
+    s[2].style.transform = open ? 'translateY(-6.5px) rotate(-45deg)' : '';
+  });
+  mobMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mobMenu.classList.remove('open');
+    burger.querySelectorAll('span').forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
+  }));
+
+  /* active link */
+  const secs = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.nav-lnk');
+  function setActive() {
+    let cur = '';
+    secs.forEach(s => { if (scrollY >= s.offsetTop - 110) cur = s.id; });
+    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + cur));
+  }
+  window.addEventListener('scroll', setActive, { passive: true });
+  setActive();
+
+  /* reveal */
+  const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+  /* skill bars */
+  const bo = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        setTimeout(() => { e.target.style.width = e.target.dataset.w + '%'; }, 100);
+        bo.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('.bar-fill').forEach(b => bo.observe(b));
+
+  /* about grid responsive */
+  const abGrid = document.querySelector('.ab-grid');
+  if (abGrid) {
+    const mq = window.matchMedia('(max-width:900px)');
+    const fix = () => abGrid.style.gridTemplateColumns = mq.matches ? '1fr' : '1fr 1fr';
+    mq.addEventListener('change', fix); fix();
+  }
+
+  /* smooth scroll */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+</script>
+</body>
+</html>
